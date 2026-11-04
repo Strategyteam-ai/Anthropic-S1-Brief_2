@@ -1,0 +1,426 @@
+<!doctype html>
+<html lang="en">
+<head>
+<meta charset="utf-8">
+<meta name="viewport" content="width=device-width, initial-scale=1, viewport-fit=cover">
+<title>Anthropic S-1 Brief</title>
+<link rel="preconnect" href="https://fonts.googleapis.com">
+<link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+<link rel="stylesheet" href="https://fonts.googleapis.com/css2?family=Exo+2:ital,wght@0,400;0,500;0,600;0,700;0,800;1,400&display=swap">
+<style>
+/* Layout: two board slides stacked on a quiet grey ground; every box carries an "i" button that reveals its explanation. Single light look, matching the printed deck. */
+:root {
+  --ground: #eceef6;
+  --paper: #ffffff;
+  --navy: #0b1150;
+  --ink: #0d1a52;
+  --body: #1e2550;
+  --peri: #5b63e6;
+  --peri-soft: #ecedfd;
+  --sky: #7fcbea;
+  --amber: #fff1d6;
+  --rule: #d5d8f0;
+  --muted: #4a5078;
+  --font: "Neo Sans Arabic", "Neo Sans", "Exo 2", "Segoe UI", Arial, sans-serif;
+  color-scheme: light;
+}
+* { box-sizing: border-box; }
+body { margin: 0;
+  background: var(--ground);
+  color: var(--body);
+  font-family: var(--font);
+  font-size: 15px;
+  line-height: 1.4;
+  padding-left: max(16px, env(safe-area-inset-left, 0px));
+  padding-right: max(16px, env(safe-area-inset-right, 0px));
+  padding-block: 28px 48px;
+}
+.deck { max-width: 1240px; margin: 0 auto; display: flex; flex-direction: column; gap: 20px; }
+.intro { display: flex; flex-direction: column; gap: 6px; }
+.eyebrow { margin: 0; font-size: 12.5px; font-weight: 700; letter-spacing: .08em; text-transform: uppercase; color: var(--peri); }
+.intro-h { margin: 0; font-size: clamp(26px, 3.2vw, 36px); font-weight: 800; color: var(--ink); line-height: 1.1; text-wrap: balance; }
+.intro-p { margin: 0; font-size: 16px; color: var(--muted); }
+.howto { font-size: 14px; color: var(--muted); display: flex; align-items: center; gap: 8px; flex-wrap: wrap; }
+.howto .i-btn { pointer-events: none; }
+
+.slide {
+  background: var(--paper);
+  border-radius: 6px;
+  box-shadow: 0 1px 2px rgba(11,17,80,.08), 0 8px 28px rgba(11,17,80,.08);
+  overflow: hidden;
+  display: flex; flex-direction: column;
+}
+.slide-title {
+  margin: 0; padding: 22px 36px 16px;
+  font-size: clamp(20px, 2.2vw, 28px); font-weight: 700; color: var(--ink);
+  line-height: 1.15; text-wrap: balance;
+  border-bottom: 2px solid var(--sky);
+}
+.tab-row { display: flex; align-items: center; justify-content: space-between; gap: 12px; }
+.tab {
+  background: var(--navy); color: #fff;
+  font-weight: 700; font-size: 14px; letter-spacing: .08em; text-transform: uppercase;
+  padding: 8px 40px 8px 36px;
+  clip-path: polygon(0 0, 100% 0, calc(100% - 18px) 100%, 0 100%);
+}
+.slide-body { padding: 16px 36px 12px; display: flex; flex-direction: column; gap: 12px; }
+.subtitle {
+  margin: 0; text-align: center; font-style: italic; color: var(--peri); font-size: 15.5px;
+  display: flex; align-items: center; justify-content: center; gap: 8px; flex-wrap: wrap;
+}
+.bar {
+  background: var(--navy); color: #fff;
+  display: flex; align-items: center; justify-content: center; gap: 10px;
+  padding: 7px 14px; font-weight: 700; letter-spacing: .07em; text-transform: uppercase; font-size: 14.5px;
+  position: relative;
+}
+.bar svg { width: 17px; height: 17px; flex: none; }
+.bar .i-btn { position: absolute; right: 8px; top: 50%; transform: translateY(-50%); }
+
+.grid { display: grid; grid-template-columns: repeat(3, minmax(0, 1fr)); gap: 10px; }
+.card {
+  border: 1.5px dashed var(--navy); border-radius: 10px;
+  padding: 12px 14px 14px; display: flex; flex-direction: column; gap: 6px; min-width: 0;
+  position: relative;
+}
+.card-head { display: flex; align-items: center; gap: 9px; padding-right: 30px; }
+.card-head svg { width: 20px; height: 20px; flex: none; color: var(--peri); }
+.card h3 { margin: 0; font-size: 17px; font-weight: 700; color: var(--peri); line-height: 1.2; }
+.card p { margin: 0; font-size: 14.5px; color: var(--body); }
+.card b, .kpi b { font-weight: 700; color: var(--ink); }
+.card .i-btn, .kpi .i-btn, .facts .i-btn { position: absolute; top: 9px; right: 9px; }
+
+.kpis { display: grid; grid-template-columns: repeat(4, minmax(0, 1fr)); gap: 10px; }
+.kpi {
+  border: 1.5px dashed var(--navy); border-radius: 10px; padding: 8px 30px 8px; text-align: center; position: relative;
+}
+.kpi .num { font-size: 26px; font-weight: 800; color: var(--navy); line-height: 1.15; font-variant-numeric: tabular-nums; }
+.kpi .lab { font-size: 13.5px; font-weight: 600; color: var(--peri); }
+
+.two { display: grid; grid-template-columns: minmax(0, 1.2fr) minmax(0, 1fr); gap: 16px; align-items: start; }
+.col { display: flex; flex-direction: column; gap: 4px; min-width: 0; }
+.scroll { overflow-x: auto; }
+table { border-collapse: collapse; width: 100%; font-size: 14px; font-variant-numeric: tabular-nums; color: var(--body); min-width: 440px; }
+th, td { border: 1px solid var(--rule); padding: 5px 8px; white-space: nowrap; }
+th { background: var(--peri-soft); color: var(--navy); font-weight: 700; text-align: left; }
+.r { text-align: right; }
+tr.hl td { background: var(--amber); font-weight: 700; }
+td.b { font-weight: 700; }
+.groups { display: grid; grid-template-columns: 30% 42% 28%; min-width: 440px; }
+.groups span { text-align: center; color: #fff; font-weight: 700; font-size: 12.5px; letter-spacing: .04em; padding: 4px 6px; }
+.groups .full { background: var(--navy); border-right: 2px solid #fff; }
+.groups .half { background: var(--peri); }
+
+.facts {
+  border: 1.5px solid #8a90f5; border-radius: 10px; padding: 10px 44px 10px 18px; position: relative;
+  display: grid; grid-template-columns: repeat(3, minmax(0, 1fr)); gap: 8px 18px;
+}
+.fact { display: flex; align-items: center; gap: 9px; font-weight: 700; color: var(--navy); font-size: 14.5px; }
+.fact svg { width: 18px; height: 18px; flex: none; color: var(--navy); }
+
+.slide-foot { padding: 8px 36px 14px; display: flex; flex-direction: column; gap: 8px; }
+.source { margin: 0; font-size: 12.5px; color: var(--body); }
+.foot-row { display: flex; justify-content: space-between; align-items: center; }
+.page { font-weight: 700; color: var(--ink); font-size: 15px; }
+.logo { display: flex; align-items: center; gap: 4px; font-weight: 800; letter-spacing: .05em; color: var(--navy); font-size: 18px; }
+.logo svg { width: 18px; height: 18px; color: var(--peri); }
+
+/* info button + popover */
+.i-btn {
+  width: 22px; height: 22px; border-radius: 50%;
+  border: 1.5px solid var(--peri); background: var(--paper); color: var(--peri);
+  font: italic 700 13px/1 Georgia, "Times New Roman", serif;
+  display: inline-grid; place-items: center; cursor: pointer; padding: 0; flex: none;
+  transition: background .15s, color .15s;
+}
+.bar .i-btn { border-color: #fff; background: transparent; color: #fff; }
+.i-btn:hover, .i-btn[aria-expanded="true"] { background: var(--peri); color: #fff; border-color: var(--peri); }
+.i-btn:focus-visible { outline: 2px solid var(--sky); outline-offset: 2px; }
+
+.pop {
+  position: fixed; z-index: 50; width: min(380px, calc(100vw - 32px));
+  max-height: min(60vh, 440px); overflow: auto;
+  background: var(--navy); color: #ffffff;
+  border: 1px solid var(--navy); border-top: 3px solid var(--sky); border-radius: 8px;
+  box-shadow: 0 12px 36px rgba(11,17,80,.22);
+  padding: 12px 14px 14px; font-size: 13.5px; line-height: 1.45;
+}
+.pop h4 { margin: 0 0 6px; font-size: 12.5px; letter-spacing: .07em; text-transform: uppercase; color: var(--sky); padding-right: 22px; }
+.pop p { margin: 0 0 6px; }
+.pop ul { margin: 0 0 6px; padding-left: 18px; }
+.pop li { margin-bottom: 3px; }
+.pop .x { position: absolute; top: 6px; right: 8px; border: 0; background: none; font-size: 18px; color: #c9cdf2; cursor: pointer; line-height: 1; padding: 4px; }
+
+@media (max-width: 860px) {
+  .grid { grid-template-columns: repeat(2, minmax(0, 1fr)); }
+  .kpis { grid-template-columns: repeat(2, minmax(0, 1fr)); }
+  .two { grid-template-columns: minmax(0, 1fr); }
+  .facts { grid-template-columns: minmax(0, 1fr); }
+}
+@media (max-width: 560px) {
+  .grid { grid-template-columns: minmax(0, 1fr); }
+  .slide-title, .slide-body, .slide-foot { padding-left: 16px; padding-right: 16px; }
+  .tab { padding-left: 16px; font-size: 12.5px; }
+  .pop { left: 16px !important; right: 16px; width: auto; bottom: max(16px, env(safe-area-inset-bottom, 0px)); top: auto !important; }
+}
+.cc-note { margin: 8px 0 0; font-size: 13.5px; color: var(--body); line-height: 1.4; }
+.cc-note p { margin: 0 0 4px; }
+.cc-note ul { margin: 0; padding-left: 18px; }
+@media (prefers-reduced-motion: reduce) { .i-btn { transition: none; } }
+</style>
+</head>
+<body>
+
+<svg width="0" height="0" style="position:absolute" aria-hidden="true">
+  <defs>
+    <symbol id="ic-users" viewBox="0 0 24 24"><g fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round"><circle cx="9" cy="8" r="3.5"/><path d="M2.5 20c.6-3.6 3.2-5.5 6.5-5.5s5.9 1.9 6.5 5.5"/><circle cx="17" cy="9" r="2.6"/><path d="M16.5 14.6c2.6.1 4.4 1.8 5 4.6"/></g></symbol>
+    <symbol id="ic-code" viewBox="0 0 24 24"><g fill="none" stroke="currentColor" stroke-width="2.2" stroke-linecap="round" stroke-linejoin="round"><path d="M8 7l-5 5 5 5M16 7l5 5-5 5M13.5 4l-3 16"/></g></symbol>
+    <symbol id="ic-key" viewBox="0 0 24 24"><g fill="none" stroke="currentColor" stroke-width="2.2" stroke-linecap="round"><circle cx="8" cy="15" r="4.5"/><path d="M11.3 11.7L20 3M16.5 6.5l2.5 2.5M14 9l2 2"/></g></symbol>
+    <symbol id="ic-growth" viewBox="0 0 24 24"><g fill="none" stroke="currentColor" stroke-width="2.2" stroke-linecap="round" stroke-linejoin="round"><path d="M3 3v18h18"/><path d="M6 15l4-4 3 3 6-6"/><path d="M15 8h4v4"/></g></symbol>
+    <symbol id="ic-chart" viewBox="0 0 24 24"><g fill="none" stroke="currentColor" stroke-width="2.2" stroke-linecap="round"><path d="M3 3v18h18"/><path d="M8 17v-5M12 17V8M16 17v-7M20 17V5"/></g></symbol>
+    <symbol id="ic-tool" viewBox="0 0 24 24"><g fill="none" stroke="currentColor" stroke-width="2.2" stroke-linecap="round" stroke-linejoin="round"><path d="M14.5 6.5a4 4 0 0 0 5 5l-9 9a2.1 2.1 0 0 1-3-3l9-9a4 4 0 0 0-2-2z"/><path d="M4 4l5 5"/></g></symbol>
+    <symbol id="ic-bolt" viewBox="0 0 24 24"><path fill="currentColor" d="M13.5 2L4 14h6.5L9 22l11-13h-6.8z"/></symbol>
+    <symbol id="ic-lock" viewBox="0 0 24 24"><g fill="none" stroke="currentColor" stroke-width="2.2" stroke-linecap="round"><rect x="4.5" y="10.5" width="15" height="10" rx="2"/><path d="M8 10.5V7.5a4 4 0 0 1 8 0v3"/></g></symbol>
+    <symbol id="ic-warn" viewBox="0 0 24 24"><g fill="none" stroke="currentColor" stroke-width="2.2" stroke-linecap="round" stroke-linejoin="round"><path d="M12 3L2 20.5h20z"/><path d="M12 10v4.5M12 17.5v.1"/></g></symbol>
+    <symbol id="ic-bulb" viewBox="0 0 24 24"><g fill="none" stroke="currentColor" stroke-width="2.2" stroke-linecap="round"><path d="M9 18h6M10 21.5h4"/><path d="M12 2.5a6.5 6.5 0 0 0-3.8 11.8c.6.5 1 1.2 1 2V16h5.6v-.2c0-.8.4-1.5 1-2A6.5 6.5 0 0 0 12 2.5z"/></g></symbol>
+    <symbol id="ic-check" viewBox="0 0 24 24"><circle cx="12" cy="12" r="10.5" fill="currentColor"/><path d="M7 12.5l3.2 3.2L17 9" fill="none" stroke="#fff" stroke-width="2.4" stroke-linecap="round" stroke-linejoin="round"/></symbol>
+  </defs>
+</svg>
+
+<main class="deck">
+  <header class="intro">
+    <p class="eyebrow">Leadership brief - Anthropic Form S-1 - filed 26 Oct 2026 - amended 2 Nov 2026</p>
+    <h1 class="intro-h">Anthropic S-1: quick summary</h1>
+    <p class="intro-p">A two-page summary of Anthropic’s IPO filing: the key takeaways first, then the facts behind them.</p>
+    <p class="howto" style="margin:6px 0 0"><button class="i-btn" tabindex="-1" aria-hidden="true">i</button> Hover over or tap any <b>i</b> to see the explanation behind that box.</p>
+  </header>
+
+  <!-- Slide 1 -->
+  <section class="slide" aria-label="Slide 1: Key takeaways">
+    <h1 class="slide-title">$33B 9M’26 revenue vs ~$900B of compute committed through 2045</h1>
+    <div class="tab-row"><div class="tab">S-1 Review - Key takeaways</div></div>
+    <div class="slide-body">
+      <p class="subtitle"><span>The $104.0B 9M’26 net loss is ~90% non-cash (convertible-note revaluation); adjusted operating margin +12%</span> <button class="i-btn" data-k="loss" aria-label="Explain: why is the net loss so big?">i</button></p>
+      <div class="bar"><svg><use href="#ic-bulb"/></svg>What leadership needs to know</div>
+      <div class="grid">
+        <article class="card"><div class="card-head"><svg><use href="#ic-users"/></svg><h3>Who is the customer?</h3></div><p>Enterprise-led: <b>11,900+</b> pay $100K+ a year (vs ~950 a year ago); <b>1,900+</b> pay $1M+; <b>~250</b> pay $10M+. <b>Top 5 = ~25% of revenue, none &gt;10%.</b></p><button class="i-btn" data-k="customer" aria-label="Explain: who is the customer">i</button></article>
+        <article class="card"><div class="card-head"><svg><use href="#ic-code"/></svg><h3>What do they sell?</h3></div><p>Claude models via <b>Claude Platform</b> (API), plus agents <b>Claude Code</b> (coding) and <b>Claude Cowork</b> (knowledge work).</p><button class="i-btn" data-k="sell" aria-label="Explain: what do they sell">i</button></article>
+        <article class="card"><div class="card-head"><svg><use href="#ic-key"/></svg><h3>Business model</h3></div><p><b>79% pay-per-token</b> ($26.3B), <b>21% subscriptions</b> ($6.9B) in 9M’26; ~44% sold via AWS, Google Cloud, Azure.</p><button class="i-btn" data-k="model" aria-label="Explain: business model">i</button></article>
+        <article class="card"><div class="card-head"><svg><use href="#ic-growth"/></svg><h3>Growth</h3></div><p>9M’26 revenue <b>$33.2B</b> vs $2.5B in 9M’25. Q3’26: <b>$17.0B</b> (+47% vs Q2’26), but back to a <b>$567M</b> operating loss after Q2’26’s $974M profit.</p><button class="i-btn" data-k="growth" aria-label="Explain: growth">i</button></article>
+        <article class="card"><div class="card-head"><svg><use href="#ic-chart"/></svg><h3>Expected revenue</h3></div><p>No guidance in S-1. Filed: Q3’26 revenue <b>$17.0B</b>. If Q4 grows at Q3’s +47%, FY26 ≈ <b>$58B</b> (our estimate); ~$600M given up to price cuts in Q3.</p><button class="i-btn" data-k="expected" aria-label="Explain: expected revenue">i</button></article>
+        <article class="card"><div class="card-head"><svg><use href="#ic-tool"/></svg><h3>Unit cost (cost to serve)</h3></div><p>9M’26: ~$14.5 of every $100 earned went on serving customers ($4.8B of $33.2B) → <b>~85% gross margin</b> (9M’25: ~29%). Opus 5.5: ~40% cheaper per task than Opus 5.</p><button class="i-btn" data-k="unit" aria-label="Explain: unit cost">i</button></article>
+        <article class="card"><div class="card-head"><svg><use href="#ic-bolt"/></svg><h3>Model cost (cost to train)</h3></div><p>9M’26 total compute $18.8B (57% of revenue; 172% in 9M’25). Less $4.8B serving cost ≈ <b>$14.0B on training</b>, research &amp; free users.</p><button class="i-btn" data-k="train" aria-label="Explain: model cost">i</button></article>
+        <article class="card"><div class="card-head"><svg><use href="#ic-lock"/></svg><h3>Debt</h3></div><p>Light: <b>$6.2B</b> Amazon notes; $15B revolver undrawn. Real leverage: <b>~$895B</b> of compute commitments: ~$448B due before 2030, ~$70B in the next 12 months.</p><button class="i-btn" data-k="debt" aria-label="Explain: debt">i</button></article>
+        <article class="card"><div class="card-head"><svg><use href="#ic-warn"/></svg><h3>Margins: now vs 2027</h3></div><p>9M’26: ~85% gross (derived), <b>–4% operating</b>, +12% adjusted. Q3’26 slipped to –3% as $5.0B of costly short-term compute hit; filing expects more near-term pressure.</p><button class="i-btn" data-k="margins" aria-label="Explain: margins now vs 2027">i</button></article>
+      </div>
+    </div>
+    <div class="slide-foot">
+      <p class="source"><b>Source</b>: Anthropic Form S-1, filed Oct 26, 2026, and S-1/A, filed Nov 2, 2026. Margins marked “derived” are our arithmetic. Tap the <b>i</b> buttons for explanations.</p>
+      <div class="foot-row"><span class="page">1</span></div>
+    </div>
+  </section>
+
+  <!-- Slide 2 -->
+  <section class="slide" aria-label="Slide 2: Facts from the filing">
+    <h1 class="slide-title">$33B 9M’26 revenue vs ~$900B of compute committed through 2045</h1>
+    <div class="tab-row"><div class="tab">S-1 Review - Facts from the filing</div></div>
+    <div class="slide-body">
+      <div class="kpis">
+        <div class="kpi"><div class="num">$131.8B</div><div class="lab">Cash &amp; ST investments</div><button class="i-btn" data-k="cash" aria-label="Explain: cash and short-term investments">i</button></div>
+        <div class="kpi"><div class="num">~900%</div><div class="lab">Net revenue retention</div><button class="i-btn" data-k="nrr" aria-label="Explain: net revenue retention">i</button></div>
+        <div class="kpi"><div class="num">$6.6M</div><div class="lab">TTM revenue per employee</div><button class="i-btn" data-k="rpe" aria-label="Explain: revenue per employee">i</button></div>
+        <div class="kpi"><div class="num">~25%</div><div class="lab">Revenue from top 5 customers</div><button class="i-btn" data-k="conc" aria-label="Explain: customer concentration">i</button></div>
+      </div>
+      <div class="two">
+        <div class="col">
+          <div class="bar"><svg><use href="#ic-chart"/></svg>Income statement ($B)<button class="i-btn" data-k="is" aria-label="Explain: how to read the income statement">i</button></div>
+          <div class="scroll">
+            <div class="groups"><span></span><span class="full">FULL YEAR (12 months)</span><span class="half">NINE MONTHS (9 mo)</span></div>
+            <table>
+              <colgroup><col style="width:30%"><col style="width:14%"><col style="width:14%"><col style="width:14%"><col style="width:14%"><col style="width:14%"></colgroup>
+              <tr><th>Line item</th><th class="r">FY23</th><th class="r">FY24</th><th class="r">FY25</th><th class="r">9M’25</th><th class="r">9M’26</th></tr>
+              <tr><td class="b">Revenue</td><td class="r">&lt;0.1</td><td class="r">0.4</td><td class="r">4.6</td><td class="r">2.5</td><td class="r b">33.2</td></tr>
+              <tr><td>Compute &amp; infra</td><td class="r">0.4</td><td class="r">2.5</td><td class="r">7.3</td><td class="r">4.4</td><td class="r">18.8</td></tr>
+              <tr><td>Personnel</td><td class="r">0.1</td><td class="r">0.5</td><td class="r">1.8</td><td class="r">1.0</td><td class="r">4.9</td></tr>
+              <tr><td>S&amp;M + partners</td><td class="r">&lt;0.1</td><td class="r">&lt;0.1</td><td class="r">0.6</td><td class="r">0.3</td><td class="r">5.5</td></tr>
+              <tr><td>Operating loss</td><td class="r">(0.6)</td><td class="r">(3.0)</td><td class="r">(8.1)</td><td class="r">(5.2)</td><td class="r">(1.3)</td></tr>
+              <tr><td class="b">Net loss</td><td class="r">(1.5)</td><td class="r">(8.3)</td><td class="r">(42.0)</td><td class="r">(25.1)</td><td class="r b">(104.0)</td></tr>
+              <tr class="hl"><td>↳ Non-cash (notes)</td><td class="r">(1.0)</td><td class="r">(5.4)</td><td class="r">(34.3)</td><td class="r">(20.1)</td><td class="r">(94.3)</td></tr>
+              <tr><td>Adj. op. margin</td><td class="r">(1,273)%</td><td class="r">(722)%</td><td class="r">(106)%</td><td class="r">(123)%</td><td class="r b">+12%</td></tr>
+            </table>
+          </div>
+        </div>
+        <div class="col">
+          <div class="bar"><svg><use href="#ic-bolt"/></svg>Compute commitments<button class="i-btn" data-k="cc" aria-label="Explain: compute commitments">i</button></div>
+          <div class="scroll">
+            <table>
+              <colgroup><col style="width:31%"><col style="width:21%"><col style="width:21%"><col style="width:27%"></colgroup>
+              <tr><th>Partner</th><th class="r">Amount</th><th>Term</th><th>Cancellable?</th></tr>
+              <tr><td>Broadcom leases</td><td class="r">$161.2B</td><td>5-yr lease</td><td class="b">No</td></tr>
+              <tr><td>Google Cloud</td><td class="r">≥$121.3B</td><td>2026–33</td><td class="b">No</td></tr>
+              <tr><td>SpaceXAI (NVIDIA)</td><td class="r">≤$120.5B</td><td>to 2029</td><td class="b">Yes, 90 days</td></tr>
+              <tr><td>Amazon (AWS)</td><td class="r">≥$110.0B</td><td>2026–36</td><td class="b">No</td></tr>
+              <tr><td>Microsoft Azure</td><td class="r">≥$44.9B</td><td>2026–33</td><td class="b">No</td></tr>
+              <tr><td>Nscale</td><td class="r">≤$44.6B</td><td>to 2033</td><td class="b">No</td></tr>
+              <tr><td>Lambda</td><td class="r">~$41.3B</td><td>to 2034</td><td class="b">No</td></tr>
+            </table>
+          </div>
+          <p class="cc-note">~$895B committed in total (incl. short-term deals and unstarted leases): ~$448B due before 2030; ~$70B in the next 12 months.</p>
+        </div>
+      </div>
+      <div class="facts">
+        <div class="fact"><svg><use href="#ic-check"/></svg>Nasdaq: ANT (GS, MS lead)</div>
+        <div class="fact"><svg><use href="#ic-check"/></svg>Founders’ LLC: 50.1% of votes</div>
+        <div class="fact"><svg><use href="#ic-check"/></svg>Debt: $6.2B Amazon notes only</div>
+        <button class="i-btn" data-k="offer" aria-label="Explain: offering, control and debt">i</button>
+      </div>
+    </div>
+    <div class="slide-foot">
+      <p class="source"><b>Source</b>: Anthropic S-1 (Oct 26, 2026) and S-1/A (Nov 2, 2026). <b>Non-cash</b> = fair-value change on convertible notes &amp; SAFEs as valuation rose. Tap the <b>i</b> buttons for explanations.</p>
+      <div class="foot-row"><span class="page">2</span></div>
+    </div>
+  </section>
+</main>
+
+<div class="pop" id="pop" role="dialog" aria-modal="false" aria-labelledby="pop-h" hidden>
+  <button class="x" id="pop-x" aria-label="Close">×</button>
+  <h4 id="pop-h"></h4>
+  <div id="pop-b"></div>
+</div>
+
+<script>
+const NOTES = {
+  loss: ["Why is the net loss so big?", [
+    "Amazon lent Anthropic money as convertible notes: loans that turn into shares at IPO instead of being repaid. As Anthropic’s valuation rose from $183B (Sep ’25) to $965B (May ’26), the shares those notes will become got far more valuable. Accounting books that rise as a loss: $94.3B of the $104.0B 9M’26 net loss (Q3’26 alone: $21.9B of a $23.3B net loss). No cash left the company; it’s dilution for shareholders, not an operating problem.",
+    "The notes are now carried at $130.5B on the balance sheet (Sep 30, 2026), against $6.2B actually lent."]],
+  customer: ["Who is the customer?", [
+    "The S-1 counts any organisation spending $100K+ a year as an ‘enterprise’ customer: 11,900+ of them at Sep 30, 2026, up from ~950 a year earlier. 1,900+ spend over $1M and ~250 over $10M.",
+    "Concentration: the top 5 customers were ~25% of revenue in the first nine months of 2026, and no single customer was above 10%. In Q3’26, ~79% of revenue came from outside the top five, up from ~64% in Q1’26. Many large customers are not on long-term contracts, so that revenue isn’t locked in."]],
+  sell: ["What do they sell?", [
+    "Three ways to buy Claude:",
+    ["Claude Platform (API): companies build Claude into their own products and pay per use.",
+     "Claude Code: an AI agent that writes, tests and fixes software alongside developers.",
+     "Claude Cowork: the same agent approach for office work (research, drafting, analysis), now being merged into the Claude app."]]],
+  model: ["Business model", [
+    ["Pay-per-token (79%, $26.3B in 9M’26): customers pay for how much they use, like an electricity meter. Revenue rises with usage but has no floor if usage falls.",
+     "Subscriptions (21%, $6.9B): monthly or annual plans for the Claude apps."],
+    "About 44% of 9M’26 revenue was sold through the AWS, Google Cloud and Azure marketplaces (47% in FY25); Anthropic contracts with the customer directly and pays the cloud a fee."]],
+  growth: ["Growth", [
+    "9M’26 = Jan–Sep 2026. Revenue was $33.2B vs $2.5B in 9M’25.",
+    "By quarter: Q1’26 $4.7B, Q2’26 $11.6B, Q3’26 $17.0B. Growth slowed from ~144% quarter on quarter in Q2 to ~47% in Q3 (still +1,127% year on year).",
+    "Q2’26 was the first profitable quarter ($974M operating profit). Q3’26 swung back to a $567M operating loss, driven by $5.0B of costly short-term compute and a $2.0B non-cash charge for the employee donation-matching programme."]],
+  expected: ["Expected revenue", [
+    "The amended S-1 still gives no forecast, and its run-rate revenue figure is still blank.",
+    "Q3’26 revenue was $16,956M (now in the filing, replacing the $16.8B press figure), up ~47% on Q2’26.",
+    "Our estimate: if Q4’26 grows at the same +47%, it adds ~$24.9B, taking FY26 revenue to ~$58B ($33.2B for 9M’26 + ~$24.9B). Flat Q4 at Q3’s level would give ~$50B. This is our scenario, not company guidance.",
+    "About $600M of potential Q3 revenue was given up through price cuts on new models and contractual discounts."]],
+  unit: ["Unit cost (cost to serve)", [
+    "What it costs to run Claude every time a paying customer uses it: computer time per request.",
+    ["9M’26: $4.8B serving cost on $33.2B revenue, so ~$14.5 of every $100 earned goes on serving and ~$85.5 is left (gross margin ~85.5%). Q3’26 alone was almost identical (~85.7%).",
+     "9M’25: serving cost ~$71 of every $100, leaving ~$29.",
+     "Opus 5.5 does the same task ~40% cheaper than Opus 5, and Anthropic passed the saving to customers."],
+    "The 85% is our arithmetic; the S-1 doesn’t print a gross margin."]],
+  train: ["Model cost (cost to train)", [
+    "Total compute in 9M’26 was $18.8B: rented chips and data centres from Google, Amazon, Microsoft and others. One shared pool used for two jobs:",
+    ["~$4.8B serving paying customers (the ‘unit cost’ box).",
+     "~$14.0B everything else: training new models, research and failed runs, free users, and staff using Claude internally."],
+    "Compute fell from 172% of revenue (9M’25) to 57% (9M’26), but rose again in Q3’26 to 58% (Q2’26: 48%) as Anthropic bought $5.0B of expensive short-term capacity. The S-1 has no training-only line; $14.0B is our arithmetic."]],
+  debt: ["Debt", [
+    "Almost no conventional debt: $6.2B of interest-free Amazon convertible notes, which turn into shares at IPO, and a $15B credit line that is undrawn. Broadcom, Google and Amazon have also committed up to $77B more in convertible notes.",
+    "The real ‘leverage’ is compute: ~$895.4B of committed spend as of and after Sep 30, 2026 (including short-term commitments and leases not yet started). ~$447.5B falls before end-2030, and ~$69.8B is due in the next 12 months."]],
+  margins: ["Margins: now vs 2027", [
+    ["Gross margin (~85%, 9M’26): revenue minus only the cost of serving customers. Tells you each sale is very profitable.",
+     "Operating margin (–4%, 9M’26): revenue minus ALL running costs, including training, salaries, sales and overheads. Tells you the whole company roughly breaks even.",
+     "Adjusted (+12%, 9M’26): adds back non-cash stock pay ($3.3B) and similar items."],
+    "Q3’26 already shows the squeeze: operating margin –3% (Q2: +8%) and adjusted 15% (Q2: 19%), driven by $5.0B of short-term compute that costs significantly more than multi-year capacity. The S-1/A says it expects short-term compute use to keep rising in the near term and to compress operating margins."]],
+  cash: ["Cash & short-term investments", [
+    "Money in hand at Sep 30, 2026: $95.6B cash and near-cash plus $36.3B in safe investments maturing within a year (e.g. treasury bills), $131.8B in total. With the undrawn $15B credit line, liquidity is $146.6B.",
+    "Mostly raised from investors ($141.1B in total), not from profits. It earned ~$2.4B of interest in 9M’26. It covers the ~$69.8B of compute commitments due in the next 12 months, but is a fraction of the ~$895B committed in total."]],
+  nrr: ["Net revenue retention (~900%)", [
+    "Take the customers who paid Anthropic a year ago: today they spend ~9x as much. It measures expansion within existing customers (excludes Pro/Max subscribers). Anything above 120% is considered excellent in software; 900% reflects how quickly usage of Claude grew inside companies."]],
+  rpe: ["Revenue per employee ($6.6M)", [
+    "Trailing-twelve-month revenue divided by headcount (~5,300 staff) at Sep 30, 2026, up from $1.4M a year earlier. For comparison, large tech companies are typically $1.5–3M. A sign the business scales with few people."]],
+  conc: ["Customer concentration (~25%)", [
+    "The five biggest customers provided ~25% of revenue in the first nine months of 2026; none was above 10%. Concentration has fallen sharply: one customer was 43% of revenue in 2023 and 11% in H1’26. Many top customers can cut spend at short notice."]],
+  is: ["How to read the income statement", [
+    ["The first three columns are full years (12 months); the last two are nine-month periods (Jan–Sep), so compare 9M’25 with 9M’26.",
+     "Compute fell from 172% of revenue (9M’25) to 57% (9M’26).",
+     "The amber row is the non-cash revaluation of convertible notes and SAFEs. It explains almost all of the net loss: 9M’26 operating loss (1.3) + interest income 2.4 – revaluation (94.3) – other expense (10.4) – tax (0.4) = (104.0).",
+     "FY25 and 9M’25 operating losses include a one-off $1.5B copyright settlement (Bartz)."]]],
+  cc: ["Compute commitments", [
+    ["Google, Amazon and Microsoft are minimum commitments: Anthropic pays them whether or not it uses the capacity. Google’s was raised to ≥$121.3B (from $114.5B).",
+     "Broadcom is 5-year rent on Google-designed chips; it can’t be cancelled.",
+     "Nscale and Lambda are also non-cancellable but bill only for capacity actually delivered.",
+     "SpaceXAI is the only one Anthropic can exit (90 days’ notice), ~$3.1B a month at full ramp.",
+     "Not in the table: AMD (>$20B expected) and a further $125–150B of Google TPU compute under negotiation."],
+    "The S-1/A now puts total committed spend at ~$895.4B (as of and after Sep 30, 2026). The seven named deals above add to ~$644B (our sum)."]],
+  offer: ["Offering, control & debt", [
+    ["Listing on Nasdaq as ANT; Goldman Sachs and Morgan Stanley lead 22 banks. Price, share count and raise size are blank (press: up to ~$100B run rate by end of year at $1.5–2T valuation).",
+     "Control: the seven co-founders hold one Class F share carrying 50.1% of votes; the independent Long-Term Benefit Trust elects a majority of the board. Public Class A holders have little say.",
+     "Use of proceeds: compute and infrastructure, hiring, RSU tax withholding."]]]
+};
+
+const pop = document.getElementById("pop");
+const popH = document.getElementById("pop-h");
+const popB = document.getElementById("pop-b");
+let current = null, pinned = false, hideTimer = null;
+const hoverable = window.matchMedia("(hover: hover) and (pointer: fine)").matches;
+
+function fill(key) {
+  const [title, parts] = NOTES[key];
+  popH.textContent = title;
+  popB.replaceChildren(...parts.map(part => {
+    if (Array.isArray(part)) {
+      const ul = document.createElement("ul");
+      part.forEach(t => { const li = document.createElement("li"); li.textContent = t; ul.append(li); });
+      return ul;
+    }
+    const p = document.createElement("p"); p.textContent = part; return p;
+  }));
+}
+function place(btn) {
+  if (window.matchMedia("(max-width: 560px)").matches) { pop.style.left = ""; pop.style.top = ""; return; }
+  const r = btn.getBoundingClientRect();
+  const w = pop.offsetWidth, h = pop.offsetHeight, vw = innerWidth, vh = innerHeight, m = 12;
+  let left = r.right - w; if (left < m) left = m; if (left + w > vw - m) left = vw - m - w;
+  let top = r.bottom + 8; if (top + h > vh - m) top = Math.max(m, r.top - h - 8);
+  pop.style.left = left + "px"; pop.style.top = top + "px";
+}
+function open(btn, pin) {
+  clearTimeout(hideTimer);
+  if (current && current !== btn) current.setAttribute("aria-expanded", "false");
+  current = btn; pinned = pin;
+  fill(btn.dataset.k);
+  pop.hidden = false;
+  btn.setAttribute("aria-expanded", "true");
+  place(btn);
+}
+function close() {
+  pop.hidden = true; pinned = false;
+  if (current) current.setAttribute("aria-expanded", "false");
+  current = null;
+}
+document.querySelectorAll(".i-btn[data-k]").forEach(btn => {
+  btn.setAttribute("aria-expanded", "false");
+  btn.setAttribute("aria-controls", "pop");
+  btn.addEventListener("click", e => {
+    e.stopPropagation();
+    if (current === btn && pinned) close(); else open(btn, true);
+  });
+  if (hoverable) {
+    btn.addEventListener("mouseenter", () => { if (!pinned) open(btn, false); });
+    btn.addEventListener("mouseleave", () => { if (!pinned) hideTimer = setTimeout(close, 180); });
+  }
+  btn.addEventListener("focus", () => { if (!pinned && !btn.matches(":hover")) open(btn, false); });
+  btn.addEventListener("blur", () => { if (!pinned) hideTimer = setTimeout(close, 180); });
+});
+pop.addEventListener("mouseenter", () => clearTimeout(hideTimer));
+pop.addEventListener("mouseleave", () => { if (!pinned) hideTimer = setTimeout(close, 180); });
+document.getElementById("pop-x").addEventListener("click", close);
+document.addEventListener("click", e => { if (!pop.hidden && !pop.contains(e.target)) close(); });
+document.addEventListener("keydown", e => { if (e.key === "Escape" && !pop.hidden) { const b = current; close(); b && b.focus(); } });
+addEventListener("scroll", () => { if (current && !pop.hidden) place(current); }, { passive: true });
+addEventListener("resize", () => { if (current && !pop.hidden) place(current); });
+</script>
+</body>
+</html>
